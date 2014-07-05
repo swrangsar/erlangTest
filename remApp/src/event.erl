@@ -36,10 +36,10 @@ start_link(EventName, Delay) ->
 
 
 %%% Event's innards
-init(Server, EventName, Delay) ->
+init(Server, EventName, DateTime) ->
     loop(#state{server=Server,
                 name=EventName,
-                to_go=normalize(Delay)}).
+                to_go=time_to_go(DateTime)}).
 
 
 cancel(Pid) ->
@@ -54,3 +54,12 @@ cancel(Pid) ->
             ok
     end.
 
+
+time_to_go(TimeOut={{_,_,_}, {_,_,_}}) ->
+    Now = calendar:local_time(),
+    ToGo = calendar:datetime_to_gregorian_seconds(TimeOut) -
+            calendar:datetime_to_gregorian_seconds(Now),
+    Secs = if ToGo > 0 -> ToGo;
+                ToGo =< 0 -> 0
+           end,
+    normalize(Secs).
