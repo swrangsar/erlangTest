@@ -40,3 +40,17 @@ init(Server, EventName, Delay) ->
     loop(#state{server=Server,
                 name=EventName,
                 to_go=normalize(Delay)}).
+
+
+cancel(Pid) ->
+    %% Monitor in case the process is already dead
+    Ref = erlang:monitor(process, Pid),
+    Pid ! {self(), Ref, cancel},
+    receive
+        {Ref, ok} ->
+            erlang:demonitor(Ref, [flush]),
+            ok;
+        {'DOWN', Ref, process, Pid, _Reason} ->
+            ok
+    end.
+
