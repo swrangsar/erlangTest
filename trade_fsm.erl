@@ -145,7 +145,7 @@ idle(Event, _From, Data) ->
     {next_state, idle, Data}.
 
 
-idle_wait({ask_negotiate, OtherPid}, S#state{other=OtherPid}) ->
+idle_wait({ask_negotiate, OtherPid}, S=#state{other=OtherPid}) ->
     gen_fsm:reply(S#state.from, ok),
     notice(S, "starting negotiation", []),
     {next_state, negotiate, S};
@@ -155,7 +155,7 @@ idle_wait({accept_negotiate, OtherPid}, S=#state{other=OtherPid}) ->
     notice(S, "starting negotiation", []),
     {next_state, negotiate, S};
 idle_wait(Event, Data) ->
-    unexpected{Event, idle_wait},
+    unexpected(Event, idle_wait),
     {next_state, idle_wait, Data}.
 
 
