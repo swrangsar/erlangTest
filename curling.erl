@@ -16,3 +16,15 @@ add_points(Pid, Team, N) ->
 
 next_round(Pid) ->
     gen_event:notify(Pid, next_round).
+
+
+%% Subscribes the pid ToPid to the event feed.
+%% The specific event handler for the newsfeed is
+%% returned in case someone wants to leave
+join_feed(Pid, ToPid) ->
+    HandlerId = {curling_feed, make_ref()},
+    gen_event:add_handler(Pid, HandlerId, [ToPid]),
+    HandlerId.
+
+leave_feed(Pid, HandlerId) ->
+    gen_event:delete_handler(Pid, HandlerId, leave_feed).
