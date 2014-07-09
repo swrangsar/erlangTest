@@ -1,6 +1,6 @@
 -module(curling).
--export([start_link/2, set_teams/3, add_points/3, next_round/1,
-    join_feed/2, leave_feed/2]).
+-export([start_link/2, set_teams/3, add_points/3, next_round/1]).
+-export([join_feed/2, leave_feed/2]).
 
 start_link(TeamA, TeamB) ->
     {ok, Pid} = gen_event:start_link(),
