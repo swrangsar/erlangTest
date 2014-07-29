@@ -19,7 +19,7 @@ int main()
         cout << "\ncould not open file!\n";
     }
     
-    while(file.good()) {
+    while (file.good()) {
         getline(file, line);
         
         linepos = line.find_first_not_of(" \t");
