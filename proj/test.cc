@@ -25,7 +25,11 @@ int main()
         linepos = line.find_first_not_of(" \t");
         if (string::npos != linepos) {
             line = line.substr(linepos);
-            if (line.substr(0,1) == "#") continue;
+            size_t commentPos = line.find('#');
+            if (string::npos != commentPos) {
+                line = line.substr(0, commentPos);
+                if (line.empty()) continue;
+            }
         } else {
             continue;
         }
@@ -52,8 +56,7 @@ int main()
         if (string::npos != pos) {
             mtmStart = atof(line.substr(0, pos).c_str());
         } else {
-            cout << "invalid data row!" << endl;
-            return(1);
+            mtmStart = atof(line.substr(0).c_str());
         }
         
         cout << symbol << " " << mtm << " " << mtmStart << endl;
